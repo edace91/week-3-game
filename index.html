@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hangman</title>
+</head>
+<body>
+
+<header>
+
+	<h1>Hangman<h2>
+
+	<h2>The Night's Watch Style<h2>
+
+</header>
+
+<section>
+
+	<div id = "winHeader"> </div>
+	<!--image of the nights watch or sigil goes in here-->
+
+	<img src="">
+
+</section>
+
+
+<aside>
+
+	<h3>Press any key to get started<h3>
+	
+	<div id="game">
+	<!--Tally the amount of wins here-->
+	 	Wins<div id = "wins"> </div>
+
+	<!--Keep track of the current word here while changing dashes into letters as correctly guessed-->
+		<div id = "blanks"> </div>
+	
+	<!--Tally the remaining guesses here-->
+
+	 	Number of guesess remaining<div id = "guesses"> </div>
+
+	<!--Print out the letters already guessed to the screen--> 	
+
+	 	Letters already guessed<div id = "lettersGuessed"> </div>
+
+	</div>
+
+</aside>
+<script type="text/javascript">
+
+// Create an array that lists out all of the options
+var wins = 0; 
+var blanks = ['-','-','-','-','-']; 
+var letters = [ 'h','o','d','o','r'];
+var guesses = 6;
+var lettersGuessed = []; 
+var guessedCorrect = 0;
+
+// Captures Key Clicks
+document.onkeyup = function(event) {
+
+	// Determines which exact key was selected. Make it lowercase
+	var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+
+	
+	// loop through the array of letters in the answer to check if it matches
+	for (var i = 0; i < letters.length; i++){
+
+		//show positive game progress
+
+		if (letters[i] === userGuess){
+
+			blanks [i] = userGuess;
+			document.getElementById( "blanks").innerHTML= blanks;
+			guessedCorrect = guessedCorrect + 1;
+
+		}
+
+		//Show negative game progress
+
+		else if ( letters[i]){
+
+			guesses = guesses - 1;
+			document.getElementById( "guesses").innerHTML= guesses;
+			lettersGuessed = userGuess + lettersGuessed;
+			document.getElementById( "lettersGuessed").innerHTML= lettersGuessed;
+		}
+
+		//win condition
+
+		else if (guessedCorrect === letters.length){
+
+			wins = wins + 1;
+			document.getElementById( "wins").innerHTML= wins;
+
+			//print header on top of the game slot by changing div's css* style
+			document.getElementById( "winHeader").innerHTML= "Hodor!";
+
+			//change the image in the section to the left of game
+
+			//play sound related to current array
+		}
+
+		// lose codition 
+
+		else if( guesses === 0 ){
+
+			//reset all variables back to start point
+
+			//break loop and go on to next word
+
+
+		}
+	}
+
+}
+
+
+
+</script>
+</body>
+</html>
