@@ -36,7 +36,7 @@
 	
 	<!--Tally the remaining guesses here-->
 
-	 	Number of guesess remaining<div id = "guesses"> </div>
+	 	Number of guesess remaining<div id = "guesses"> 6 </div>
 
 	<!--Print out the letters already guessed to the screen--> 	
 
@@ -47,70 +47,90 @@
 </aside>
 <script type="text/javascript">
 
-// Create an array that lists out all of the options
-var wins = 0; 
-var blanks = ['-','-','-','-','-']; 
-var letters = [ 'h','o','d','o','r'];
-var guesses = 6;
-var lettersGuessed = []; 
-var guessedCorrect = 0;
+//list of words 
+var words = [ "hodor", "targaryen","wildfire","dragonglass","direwolf","valardohaeris"];
 
+//chose word from list at random
+currentWord = words[Math.floor(Math.random() * words.length)];
+
+//split word into independent characters within an array
+var letters = currentWord.split([""]);
+
+//create a empty array for blanks
+var blanks =[];
+
+//loop through the length of letters to create the same amount of blanks as current word
+for (var i = 0; i < letters.length; i++) {
+
+	blanks.push("-");
+}
+
+//define variables
+var wins = 0; 
+var guesses = 6;
+var lettersGuessed = ""; 
+var guessedCorrect = 0;
+var alreadyPressed = [];
+ 
 // Captures Key Clicks
 document.onkeyup = function(event) {
 
 	// Determines which exact key was selected. Make it lowercase
 	var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
-
 	
-	// loop through the array of letters in the answer to check if it matches
-	for (var i = 0; i < letters.length; i++){
+	
+        
+		// loop through the array of letters in the answer to check if it matches
+		for (var i = 0; i < letters.length; i++){
 
-		//show positive game progress
+			//show positive game progress
 
-		if (letters[i] === userGuess){
+			if (letters[i] === userGuess){
 
-			blanks [i] = userGuess;
-			document.getElementById( "blanks").innerHTML= blanks;
-			guessedCorrect = guessedCorrect + 1;
+				blanks [i] = userGuess;
+				document.getElementById( "blanks").innerHTML= blanks;
+				guessedCorrect + 1;
 
+			}
 		}
+			
+		if( letters.indexOf(userGuess)=== -1){
 
-		//Show negative game progress
-
-		else if ( letters[i]){
-
-			guesses = guesses - 1;
+			guesses= guesses -1;
 			document.getElementById( "guesses").innerHTML= guesses;
-			lettersGuessed = userGuess + lettersGuessed;
-			document.getElementById( "lettersGuessed").innerHTML= lettersGuessed;
-		}
+				
 
-		//win condition
+			lettersGuessed = lettersGuessed + userGuess;
+			document.getElementById( "lettersGuessed").innerHTML=lettersGuessed;	
 
-		else if (guessedCorrect === letters.length){
+			}
+
+			//win condition
+
+			// needs to be outside the loop 
+
+		if (guessedCorrect === letters.length){
 
 			wins = wins + 1;
 			document.getElementById( "wins").innerHTML= wins;
 
 			//print header on top of the game slot by changing div's css* style
-			document.getElementById( "winHeader").innerHTML= "Hodor!";
-
+				
 			//change the image in the section to the left of game
 
 			//play sound related to current array
 		}
 
-		// lose codition 
+			// needs to be outside the loop 
+			// lose codition 
 
 		else if( guesses === 0 ){
-
 			//reset all variables back to start point
-
 			//break loop and go on to next word
-
-
+			 location.reload();
 		}
-	}
+		
+		alreadyPressed.push(userGuess);
 
 }
 
