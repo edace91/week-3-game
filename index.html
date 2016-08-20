@@ -70,7 +70,7 @@ var words = [ "hodor", "targaryen","wildfire","dragonglass","direwolf","valardoh
 	blanks.push("-");
 	}
 	//write up the blanks to the screen first
-	document.getElementById( "blanks").innerHTML= blanks;
+	document.getElementById( "blanks").innerHTML= blanks.join(' ');
 
 		//define variables
 
@@ -107,7 +107,7 @@ var words = [ "hodor", "targaryen","wildfire","dragonglass","direwolf","valardoh
 					blanks [i] = userGuess;
 					//write it up within the ID blnks
 
-					document.getElementById( "blanks").innerHTML= blanks;
+					document.getElementById( "blanks").innerHTML= blanks.join(' ');
 							
 					//win condition counter
 
