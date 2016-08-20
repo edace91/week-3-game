@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Hangman</title>
+	
 </head>
 <body>
 
@@ -36,7 +37,7 @@
 	
 	<!--Tally the remaining guesses here-->
 
-	 	Number of guesess remaining<div id = "guesses"> 6 </div>
+	 	Number of guesess remaining<div id = "guesses"> </div>
 
 	<!--Print out the letters already guessed to the screen--> 	
 
@@ -47,94 +48,127 @@
 </aside>
 <script type="text/javascript">
 
+
+var wins = 0; 
+
 //list of words 
 var words = [ "hodor", "targaryen","wildfire","dragonglass","direwolf","valardohaeris"];
 
-//chose word from list at random
-currentWord = words[Math.floor(Math.random() * words.length)];
+	var initializeHangman = function(){
+	//chose word from list at random
+	currentWord = words[Math.floor(Math.random() * words.length)];
 
-//split word into independent characters within an array
-var letters = currentWord.split([""]);
+	//split word into independent characters within an array
+	var letters = currentWord.split([""]);
 
-//create a empty array for blanks
-var blanks =[];
+	//create a empty array for blanks
+	var blanks =[];
 
-//loop through the length of letters to create the same amount of blanks as current word
-for (var i = 0; i < letters.length; i++) {
+	//loop through the length of letters to create the same amount of blanks as current word
+	for (var i = 0; i < letters.length; i++) {
 
 	blanks.push("-");
-}
+	}
+	//write up the blanks to the screen first
+	document.getElementById( "blanks").innerHTML= blanks;
 
-//define variables
-var wins = 0; 
-var guesses = 6;
-var lettersGuessed = ""; 
-var guessedCorrect = 0;
-var alreadyPressed = [];
- 
-// Captures Key Clicks
-document.onkeyup = function(event) {
+		//define variables
 
-	// Determines which exact key was selected. Make it lowercase
-	var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+		//start with 0 wins
+
+
 	
-	
-        
-		// loop through the array of letters in the answer to check if it matches
-		for (var i = 0; i < letters.length; i++){
 
-			//show positive game progress
+		//length of variable tries for every word
+		var guesses = letters.length;
+		//this is where the letters already pressed will be shown
+		var lettersGuessed = ""; 
+		//the win counter
+		var guessedCorrect = [];
+		//logs key user pressed
+		var alreadyPressed = [];
+		
+ 	
+		//print number of guesses available to the screen
+		document.getElementById( "guesses").innerHTML= guesses;
+		// Captures Key Clicks and starts game
+		document.onkeyup = function(event) {
 
-			if (letters[i] === userGuess){
+		// Determines which exact key was selected. Make it lowercase
+		var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+		        
+			// loop through the array of letters in the answer to check if it matches
+			for (var i = 0; i < letters.length; i++){
 
-				blanks [i] = userGuess;
-				document.getElementById( "blanks").innerHTML= blanks;
-				guessedCorrect + 1;
+				//show positive game progress
+				//if user guess matches letters array
+				if (letters[i] === userGuess){
+					//switch blanks into letter pressed
+					blanks [i] = userGuess;
+					//write it up within the ID blnks
 
+					document.getElementById( "blanks").innerHTML= blanks;
+							
+					//win condition counter
+
+					if( alreadyPressed.indexOf(userGuess)=== -1){
+
+						guessedCorrect.push(userGuess);
+					}
+				}
 			}
-		}
-			
-		if( letters.indexOf(userGuess)=== -1){
-
-			guesses= guesses -1;
-			document.getElementById( "guesses").innerHTML= guesses;
-				
-
-			lettersGuessed = lettersGuessed + userGuess;
-			document.getElementById( "lettersGuessed").innerHTML=lettersGuessed;	
-
+						
+			//negative game progress, checks if element is not within the array
+			if( letters.indexOf(userGuess)=== -1){
+				//checks id the user already pressed a letter not within the array
+				if( alreadyPressed.indexOf(userGuess)=== -1){
+					//decrease guesses by one 
+					guesses= guesses -1;
+					document.getElementById( "guesses").innerHTML= guesses;
+					//changes input to uppercase
+					var lettersUp = userGuess.toUpperCase();
+					//prints up the user guess to the screen 
+					lettersGuessed = lettersGuessed + lettersUp + " ";
+					document.getElementById( "lettersGuessed").innerHTML=lettersGuessed;	
+				}
 			}
+			//log user guesses
+			alreadyPressed.push(userGuess);
 
 			//win condition
-
 			// needs to be outside the loop 
+			if (guessedCorrect.length===letters.length){
 
-		if (guessedCorrect === letters.length){
-
-			wins = wins + 1;
-			document.getElementById( "wins").innerHTML= wins;
-
-			//print header on top of the game slot by changing div's css* style
 				
-			//change the image in the section to the left of game
+				
+				wins++;
 
-			//play sound related to current array
-		}
+				document.getElementById( "wins").innerHTML= wins;
+				
+				initializeHangman();
+				//print header on top of the game slot by changing div's css* style
+					
+				//change the image in the section to the left of game
 
-			// needs to be outside the loop 
-			// lose codition 
+				//play sound related to current array
+				
+				//reset the function to initialize agin
+				
 
-		else if( guesses === 0 ){
-			//reset all variables back to start point
-			//break loop and go on to next word
-			 location.reload();
-		}
-		
-		alreadyPressed.push(userGuess);
+			}
 
+			// lose codition
+			else if( guesses === 0 ){
+				//reset all variables back to start point
+				initializeHangman();
+			}
+	}
+	
+
+	
 }
 
-
+initializeHangman();
 
 </script>
 </body>
